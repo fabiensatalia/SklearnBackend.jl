@@ -33,7 +33,12 @@ import CounterfactualExplanations.Models: logits
 import CounterfactualExplanations.Models: probs 
 
 function probs(model::SklearnModel, input::AbstractArray)
-    [t for t in transpose(model.model.predict_proba(to_python_df(input', model)))]
+    # We need a two-dimensional array but some generators send vectors
+    # or subarrays of dimension 1
+    if ndims(input) == 1
+        input = reshape(input, (length(input), 1))
+    end
+    transpose(model.model.predict_proba(to_python_df(input', model)))
 end
 # Some scikit-learn classifiers do not rely on logits, therefore we cannot
 # assume that they are generally available. We use probabilities.
