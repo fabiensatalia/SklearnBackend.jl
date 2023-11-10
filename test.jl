@@ -11,7 +11,7 @@ model = gen_sample_model()
 # transform it to CounterfactualData
 data = CounterfactualData(model)
 
-# transform that back to a sklearn model, just because we can
+# transform that back to a sklearn model, for testing purpose
 test = SklearnModel(data, [n for n in model.X.columns], "RandomForestClassifier")
 
 # Select a factual and target
